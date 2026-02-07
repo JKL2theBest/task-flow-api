@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from src.schemas.task import TaskCreate, TaskResponse
 from src.services.task import TaskService, get_task_service
+from src.core.exceptions import TaskAlreadyCompletedError
 
 router = APIRouter()
 
@@ -50,7 +51,11 @@ async def complete_task(
     service: TaskService = Depends(get_task_service),
 ):
     """Завершить задачу."""
-    task = await service.complete_task(task_id)
+    try:
+        task = await service.complete_task(task_id)
+    except TaskAlreadyCompletedError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
+
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
