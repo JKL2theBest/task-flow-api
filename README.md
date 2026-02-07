@@ -1,41 +1,39 @@
-# Task Flow API
+# Task Flow API & Frontend
 
-## Как запустить
+Полнофункциональное MVP-решение для управления задачами.
 
-### Вариант 1: Docker (Рекомендуется)
+## Скриншоты
 
-Самый быстрый способ запустить проект. Требуется только установленный Docker.
+| **Frontend SPA** | **Swagger API Docs** |
+|:---:|:---:|
+| ![Frontend](docs/frontend.png) | ![Swagger](docs/swagger.png) |
 
-1.  Создайте файл `.env` из примера:
-    ```bash
-    cp .env.example .env
-    ```
-2.  Запустите проект одной командой:
-    ```bash
-    docker-compose up --build -d
-    ```
+| **Prometheus Metrics** | **Pytest Results** |
+|:---:|:---:|
+| ![Metrics](docs/metrics.png) | ![Pytest](docs/pytest.png) |
 
-Приложение будет доступно по адресу:
-*   **Swagger UI (документация):** [http://localhost:8000/docs](http://localhost:8000/docs)
-*   **Метрики Prometheus:** [http://localhost:8000/metrics](http://localhost:8000/metrics)
+## 🛠 Стек
+- **Backend**: Python 3.12, FastAPI, PostgreSQL (Asyncpg), SQLAlchemy 2.0, Alembic.
+- **Frontend**: React 19, TypeScript, Vite, TanStack Query.
+- **Infrastructure**: Docker Compose, GitHub Actions (CI), Prometheus Metrics, JSON Logging.
 
-Миграции базы данных применяются автоматически при старте контейнера.
+## Быстрый запуск
+```bash
+docker-compose up --build -d
+```
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Metrics**: [http://localhost:8000/metrics](http://localhost:8000/metrics)
 
-### Вариант 2: Локально (Poetry)
+## Что реализовано
+- **Clean Architecture**: Четкое разделение на слои (API, Service, Repository, Model).
+- **Frontend**: Современный SPA на TypeScript с реактивным обновлением данных.
+- **Observability**: Структурированные JSON-логи и экспорт метрик для Prometheus.
+- **Reliability**: Интеграционные тесты бэкенда и автоматизированный CI-пайплайн.
 
-1.  Установите зависимости:
-    ```bash
-    poetry install
-    ```
-2.  Поднимите базу данных (пример через Docker):
-    ```bash
-    docker run --name pg-local -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=task_flow_db -p 5432:5432 -d postgres:17
-    ```
-3.  Примените миграции:
-    ```bash
-    poetry run alembic upgrade head
-    ```
-4.  Запустите сервер:
-    ```bash
-    poetry run uvicorn src.main:app --reload
-    ```
+## Возможное развитие (Roadmap)
+Текущая версия — это качественный MVP, созданный в рамках 2-дневного дедлайна. Проект готов к масштабированию:
+1. **Observability**: Подключение Sentry и Grafana.
+2. **Testing**: Внедрение E2E-тестов на Playwright.
+3. **Security**: JWT-авторизация и ролевая модель доступа.
+4. **DevOps**: Настройка автоматического деплоя (CD) и K8s манифестов.
