@@ -6,6 +6,8 @@ from src.core.config import settings
 from src.core.logging import LOGGING_CONFIG
 from src.api.v1 import tasks
 
+from fastapi.middleware.cors import CORSMiddleware
+
 logging.config.dictConfig(LOGGING_CONFIG)
 
 app = FastAPI(
@@ -13,6 +15,14 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     description="REST API для тестового задания (Task Management)",
     version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 Instrumentator().instrument(app).expose(app)
